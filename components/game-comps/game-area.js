@@ -20,7 +20,7 @@ export default function GameArea(props) {
   const displayGameScreen = (isStarted) => {
     let gameScreen;
     if(isStarted) {
-      gameScreen = <PlayScreen gameMode={props.gameMode} />
+      gameScreen = <PlayScreen gameMode={props.gameMode} quitGame={startGame} />
     } else {
       gameScreen = <StartGameScreen gameMode={props.gameMode} startGame={startGame} />
     };

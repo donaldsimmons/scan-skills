@@ -23,7 +23,7 @@ export default function PlayScreen(props) {
 
   const displayPauseScreen = (isPaused) => {
     if(isPaused) {
-      return <PauseScreen currentReps="14" totalReps="25" togglePause={togglePause} />
+      return <PauseScreen currentReps="14" totalReps="25" togglePause={togglePause} quitGame={props.quitGame} />
     };
   };
 
