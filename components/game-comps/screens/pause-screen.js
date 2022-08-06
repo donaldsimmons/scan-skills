@@ -7,9 +7,14 @@ export default function PauseScreen(props) {
       <div className="title-area">
         <h1>Paused</h1>
       </div>
-      <h3 className="rep-counter">{props.currentReps} / { props.totalReps}</h3>
-      <StartButton className="start-button" icon="RESUME" onClick={props.togglePause} />
-      <BackButton icon="Quit" onClick={props.quitGame}/>
+      <div id="game-info">
+        <h3 className="reps">{props.currentReps} / { props.totalReps}</h3>
+        <h3 className="interval">7 seconds</h3>
+      </div>
+      <div id="button-area">
+        <StartButton className="start-button" icon="RESUME" onClick={props.togglePause} />
+        <BackButton icon="QUIT" onClick={props.quitGame}/>
+      </div>
     </div>
   );
 };

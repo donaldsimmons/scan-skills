@@ -13,7 +13,6 @@ export default function PlayScreen(props) {
   const [paused, setPaused] = useState(false);
 
   const togglePause = () => {
-    console.log(paused);
     if(paused) {
       setPaused(false);
     } else {
@@ -29,7 +28,7 @@ export default function PlayScreen(props) {
 
   return(
     <div id="play-screen" className="game-screen">
-      <h3 className="rep-counter">14/25</h3>
+      <h2 className="rep-counter">14/25</h2>
       <div id="game-button-area">
         <PauseButton className="game-button" onClick={togglePause} />
       </div>
