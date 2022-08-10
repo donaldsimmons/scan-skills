@@ -22,8 +22,8 @@ export default function StartGameScreen(props) {
         <h1>{props.gameMode}</h1>
       </div>
       <div id="game-info">
-        <h2 className="reps">25 Reps</h2>
-        <h2 className="interval">7 seconds</h2>
+        <h2 className="reps">{props.totalReps + " Reps" }</h2>
+        <h2 className="interval">{props.timeInterval + " Seconds"}</h2>
         <p id="game-objective">Placeholder for "game-objective" text</p>
       </div>
       <div id="button-area">

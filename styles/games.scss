@@ -38,6 +38,42 @@ button {
   width: 100%;
 }
 
+.text-white {
+  color: white;
+}
+
+.text-black {
+  color: black;
+}
+
+.bg-white {
+  background-color: white;
+}
+
+.bg-blue {
+  background-color: blue;
+}
+
+.bg-red {
+  background-color: red;
+}
+
+.bg-yellow {
+  background-color: yellow;
+}
+
+.bg-green {
+  background-color: green;
+}
+
+.bg-purple {
+  background-color: purple;
+}
+
+.bg-orange {
+  background-color: orange;
+}
+
 /*
   Start Game Screen
 */
@@ -121,6 +157,17 @@ button {
   border: none;
   font-size: 6em;
   align-items: center;
+}
+
+#countdown-area {
+  grid-column: 1 / span 2;
+  grid-row: 2 / span 1;
+}
+
+#countdown-area {
+  font-size: 5em;
+  justify-self: center;
+  align-self: center;
 }
 
 /*
