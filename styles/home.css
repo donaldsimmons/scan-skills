@@ -1,0 +1,74 @@
+#home-page {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr 1fr .75fr; 
+}
+
+.title-screen .title-area {
+  background-color: #191970;
+  color: white;
+  border: 2px solid #131350;
+  text-align: center;
+}
+
+#home-page #button-area {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+#home-page #button-area a {
+  width: 75%;
+  grid-column: 2 / span 1;
+  justify-self: center;
+  align-self: center;
+}
+
+.title-screen button {
+  background-color: #191970;
+  color: white;
+}
+
+.title-screen button:hover {
+  background-color: #131350;
+}
+
+#game-selection-area {
+  display: grid;
+  margin-top: 3%;
+  grid: 1fr / 1fr 1fr;
+}
+
+#game-selection-area > div {
+  padding-left: 3%;
+}
+
+#selection-area {
+  display: grid;
+  grid-template-row: repeat(3, 1fr);
+  border-right: 1px solid #191970;
+}
+
+#selection-area > div {
+  display: grid;
+  grid: 1fr / .50fr 1fr .50fr;
+  align-items: center;
+}
+
+#selection-area label {
+  font-weight: bold;
+}
+
+#selection-area input {
+  width: 75%;
+}
+
+#game-selection-area select {
+  width: 50%;
+}
+
+#description-area {
+  display: grid;
+  grid-template-rows: .3fr .7fr; 
+}
