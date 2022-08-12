@@ -3,108 +3,159 @@ import PauseScreen from './pause-screen';
 import PauseButton from '../../buttons/pause-button';
 
 export default function PlayScreen(props) {
+  /* States w/ effects */
   const [paused, setPaused] = useState(false);
+  const [pauseButtonHidden, setPauseButtonHidden] = useState(false);
   const [countdownActive, setCountdownActive] = useState(true);
+  const [countdownValue, setCountdownValue] = useState(3);
+  const [currentColor, setCurrentColor] = useState();
   const [repCount, setRepCount] = useState(0);
-  const timers = useRef({
-    "initialTimer": "",
-    "countdawnTimer": "",
-    "recursionTimer": "",
-    "colorSwitchTimer": ""
-  });
-  const colors = useRef({
-    "previous": "",
-    "current": ""
-  });
-  const docElements = useRef({
-    "screen": "",
-    "pauseIcon": "",
-  });
+  /* Manages Timeouts to switch screen colors */
+  const [onColorScreen, setOnColorScreen] = useState(false);
+  const [onWhiteScreen, setOnWhiteScreen] = useState(true);
+
+  /* Control-flow-only states */
+  const [gameActive, setGameActive] = useState(false);
+  const [resumed, setResumed] = useState(false);
+
+  /* Ref to elements for style/content changes */
+  const screenRef = useRef();
+  const buttonRef = useRef();
+  const countdownRef = useRef();
 
   useEffect(() => {
-    docElements.current["screen"] = document.getElementById("play-screen");
-    docElements.current["pauseIcon"] = document.getElementById("pause-button").getElementsByTagName("svg")[0];
-
     startCountdown();
-
-    timers.current["initialTimer"] = setTimeout(() => {
-      colors.current["previous"] = "white"
-      colors.current["current"] = pickColor();
-      setColor();
-      playGame();
-    }, 2000);
   }, []);
 
-  const togglePause = () => {
-    if(paused) {
-      setPaused(false);
-      playGame();
-    } else {
-      setPaused(true);
-      stopTimers();
-      return(false);
-    };
-  }
-
-  const startCountdown = () => {
-    const cdTimer = document.getElementById("countdown-area").getElementsByTagName("h1")[0];
-    let secondsRemaining = 3;
-    timers.current["countdownTimer"] = setInterval(() => {
-      if(secondsRemaining == 1) {
-        setCountdownActive(false);
-        clearInterval(timers.current["countdownTimer"]);
+  useEffect(() => {
+    if(gameActive) {
+      if(paused) {
+        setPauseButtonHidden(true);
+        togglePauseButtonVisibility(false);
+        setCountdownValue(3);
+        setOnColorScreen(false);
       } else {
-        cdTimer.innerHTML = secondsRemaining -= 1;
-      }
-    }, 1000);
-  }
+        setCurrentColor("white");
+        setCountdownActive(true);
+        setResumed(true);
+        setOnWhiteScreen(true);
+        startCountdown();
+      }; 
+    };
+  }, [paused]);
+
+  useEffect(() => {
+    if(pauseButtonHidden) {
+      buttonRef.current.classList.add("hidden");
+    } else {
+      buttonRef.current.classList.remove("hidden");
+    };
+  }, [pauseButtonHidden]);
+
+  useEffect(() => {
+    if(countdownActive) {
+      setPauseButtonHidden(true);
+    } else {
+      setPauseButtonHidden(false);
+    };
+  }, [countdownActive]);
+
+  useEffect(() => {
+    if(!paused) {
+      const secondCDTimer = setTimeout(() => {
+        if(countdownValue==1) {
+          setPauseButtonHidden(true);
+          setCountdownActive(false);
+          setGameActive(true);
+          setRepCount(repCount+1);
+        } else {
+          setCountdownValue(countdownValue-1);
+          clearTimeout(secondCDTimer);
+        };
+      }, 1000);
+    };
+  }, [countdownValue]);
+
+  useEffect(() => {
+    if(gameActive) {
+      setScreenColor();
+    };
+  }, [currentColor]);
+
+  useEffect(() => {
+    if(gameActive && !paused) {
+      setOnColorScreen(true);
+    };
+  }, [repCount]);
+
+  useEffect(() => {
+    if(gameActive && onColorScreen && !paused) {
+      setCurrentColor(pickColor());
+      setOnWhiteScreen(false);
+      const showColorTimer = setTimeout(() => {
+        if(resumed) {
+          setResumed(false);
+        };
+        setOnWhiteScreen(true);
+      }, props.timeInterval*1000);
+      return(() => {return clearTimeout(showColorTimer)});
+    };
+  }, [onColorScreen]);
+
+  useEffect(() => {
+    if(gameActive && onWhiteScreen && !paused && !resumed) {
+      setOnColorScreen(false);
+      if(repCount < props.totalReps) {
+        setCurrentColor("white");
+        const showWhiteTimer = setTimeout(() => {
+          setRepCount(repCount+1);
+        }, 1000);
+        return(() => {return clearTimeout(showWhiteTimer)});
+      } else {
+        setGameActive(false);
+      };
+    };
+  }, [onWhiteScreen]);
 
   const pickColor = () => {
     const colorIndex = Math.floor(Math.random() * (5-0 + 1) + 0);
     const colors = ["blue", "red", "yellow", "green", "purple", "orange"];
     return colors[colorIndex];
-  }
-
-  const setColor = () => {
-    docElements.current["screen"].classList.replace("bg-"+colors.current["previous"], "bg-"+colors.current["current"]);
-    docElements.current["pauseIcon"].setAttribute("style", "background-color: "+colors.current["current"]);
-  }
-
-  const playGame = () => {
-    colors.current["previous"] = colors.current["current"];
-    colors.current["current"] = "white";
-    setColor();
-
-    gameTimer();
   };
 
-  const gameTimer = () => {
-    timers.current["colorSwitchTimer"] = setTimeout(() => {
-      colors.current["previous"] = "white";
-      colors.current["current"] = pickColor();
-      setColor();
-      setRepCount(repCount+=1);
+  const setScreenColor = () => {
+    screenRef.current.classList.replace(screenRef.current.classList[1], "bg-"+currentColor);
+    buttonRef.current.setAttribute("style", "background-color: "+currentColor)
+  };
+
+  const startCountdown = () => {
+    const firstCDTimer = setTimeout(() => {
+      setCountdownValue(countdownValue-1); 
     }, 1000);
-
-    timers.current["recursionTimer"] = setTimeout(() => {
-      if(repCount < props.totalReps) {
-        playGame();
-      };
-    }, props.timeInterval*1000);
+    return(() => { return(clearTimeout(firstCDTimer))});
   };
 
-  const stopTimers = () => {
-    clearInterval(timers.current["countdownTimer"]);
-    clearTimeout(timers.current["initialTimer"]);
-    clearTimeout(timers.current["recursionTimer"]);
-    clearTimeout(timers.current["colorSwitchTimer"]);
-  }
+  const togglePauseState = () => {
+    if(paused) {
+      setPaused(false);
+    } else {
+      setPaused(true);
+    };
+  };
+
+  const togglePauseButtonVisibility = (visible) => {
+    if(visible) {
+      buttonRef.current.classList.remove("hidden");
+    } else {
+      buttonRef.current.classList.add("hidden");
+    };
+  };
 
   const displayCountdown = (countdownActive) => {
     if(countdownActive) {
       return(
         <div id="countdown-area">
-          <h1>3</h1>
+          <h1 ref={countdownRef}>{countdownValue}</h1>
         </div>
       );
     };
@@ -112,15 +163,15 @@ export default function PlayScreen(props) {
 
   const displayPauseScreen = (isPaused) => {
     if(isPaused) {
-      return <PauseScreen currentReps={repCount} totalReps={props.totalReps} timeInterval={props.timeInterval} togglePause={togglePause} quitGame={props.quitGame} />
+      return <PauseScreen currentReps={repCount} totalReps={props.totalReps} timeInterval={props.timeInterval} togglePause={togglePauseState} quitGame={props.quitGame} />
     };
   };
 
   return(
-    <div id="play-screen" className="game-screen bg-white">
-      <h2 className="reps game-text">{repCount + " / " + props.totalReps}</h2>
+    <div id="play-screen" className="game-screen bg-white" ref={screenRef}>
+      <h2 className="reps game-text hidden">{repCount + " / " + props.totalReps}</h2>
       <div id="game-button-area">
-        <PauseButton className="game-button game-text" onClick={togglePause} />
+        <PauseButton className="game-button hidden" onClick={togglePauseState} ref={buttonRef} />
       </div>
       {displayCountdown(countdownActive)}
       {displayPauseScreen(paused)}

@@ -23,6 +23,12 @@ button {
   border-style: solid;
 }
 
+/* Visibility */
+
+button.hidden {
+  display: none;
+}
+
 /* Text Styles */
 
 .text-white {
@@ -45,6 +51,10 @@ button {
 
 .bg-yellow {
   background-color: yellow;
+}
+
+.bg-red {
+  background-color: red;
 }
 
 .bg-green {

@@ -1,4 +1,6 @@
-export default function Button(props) {
+import React, { useRef } from 'react';
+
+function Button(props, ref) {
   const onClickMethod = () => {
     if(props.onClick) {
       props.onClick();
@@ -6,8 +8,10 @@ export default function Button(props) {
   };
 
   return(
-    <button id={props.id} className={props.className} onClick={() => onClickMethod()}>
+    <button id={props.id} className={props.className} onClick={() => onClickMethod()} ref={ref}>
       {props.icon}
     </button>
   );
 };
+
+export default React.forwardRef(Button);
