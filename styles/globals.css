@@ -1,3 +1,5 @@
+/* Global Element Styles */
+
 html,
 body {
   padding: 0;
@@ -6,11 +8,63 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 a {
   color: inherit;
   text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
+button {
+  cursor: pointer;
+  background-color: white;
+  border-style: solid;
+}
+
+/* Visibility */
+
+button.hidden {
+  display: none;
+}
+
+/* Text Styles */
+
+.text-white {
+  color: white;
+}
+
+.text-black {
+  color: black;
+}
+
+/* Background Styles */
+
+.bg-white {
+  background-color: white;
+}
+
+.bg-blue {
+  background-color: blue;
+}
+
+.bg-yellow {
+  background-color: yellow;
+}
+
+.bg-red {
+  background-color: red;
+}
+
+.bg-green {
+  background-color: green;
+}
+
+.bg-purple {
+  background-color: purple;
+}
+
+.bg-orange {
+  background-color: orange;
 }

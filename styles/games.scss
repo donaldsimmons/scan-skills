@@ -2,12 +2,6 @@
   General
 */
 
-button {
-  cursor: pointer;
-  background-color: white;
-  border-style: solid;
-}
-
 #game-area {
   width: 100%;
   margin: 0 auto;
@@ -36,42 +30,6 @@ button {
 
 #button-area a button {
   width: 100%;
-}
-
-.text-white {
-  color: white;
-}
-
-.text-black {
-  color: black;
-}
-
-.bg-white {
-  background-color: white;
-}
-
-.bg-blue {
-  background-color: blue;
-}
-
-.bg-red {
-  background-color: red;
-}
-
-.bg-yellow {
-  background-color: yellow;
-}
-
-.bg-green {
-  background-color: green;
-}
-
-.bg-purple {
-  background-color: purple;
-}
-
-.bg-orange {
-  background-color: orange;
 }
 
 /*
